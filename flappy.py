@@ -210,14 +210,14 @@ def mainGame(movementInfo):
 
 	# list of upper pipes
 	upperPipes = [
-		{'x': SCREENWIDTH + 200, 'y': newPipe1[0]['y']},
-		{'x': SCREENWIDTH + 200 + (SCREENWIDTH / 2), 'y': newPipe2[0]['y']},
+		{'x': (SCREENWIDTH/2) + playerx, 'y': newPipe1[0]['y']},
+		{'x': SCREENWIDTH + playerx, 'y': newPipe2[0]['y']},
 	]
 
 	# list of lowerpipe
 	lowerPipes = [
-		{'x': SCREENWIDTH + 200, 'y': newPipe1[1]['y']},
-		{'x': SCREENWIDTH + 200 + (SCREENWIDTH / 2), 'y': newPipe2[1]['y']},
+		{'x': (SCREENWIDTH/2) + playerx, 'y': newPipe1[1]['y']},
+		{'x': (SCREENWIDTH) + playerx, 'y': newPipe2[1]['y']},
 	]
 
 	pipeVelX = -4
@@ -246,16 +246,15 @@ def mainGame(movementInfo):
 		RED=(255,0,0)
 		# Enter the entry into the csv
 		# feed in the value whether to flap or not
-		if(timestep%7==0 or playerFlapped):
-			delx = upperPipes[0]['x']-(playerx +IMAGES['player'][0].get_width())
-			if(delx > 0):
-				p = 0
-			else:
-				p = 1
-			delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
-			dely1 = playery - (upperPipes[p]['y']+pipeHeight)
-			dely2 = lowerPipes[p]['y'] - playery
-			writer.writerow((playerVelY,delx,dely1,dely2,playerVelY**2,delx**2,dely1**2,dely2**2,playerVelY**3,delx**3,dely1**3,dely2**3,
+		delx = upperPipes[0]['x']-(playerx +IMAGES['player'][0].get_width())
+		if(delx > 0):
+			p = 0
+		else:
+			p = 1
+		delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
+		dely1 = playery - (upperPipes[p]['y']+pipeHeight)
+		dely2 = lowerPipes[p]['y'] - playery
+		writer.writerow((playerVelY,delx,dely1,dely2,playerVelY**2,delx**2,dely1**2,dely2**2,playerVelY**3,delx**3,dely1**3,dely2**3,
 							int(playerFlapped)))
 		timestep+=1
 

@@ -12,7 +12,7 @@ X = np.loadtxt('train.csv',delimiter=",")
 m, n = X.shape
 y = X[:,n-1]
 X = X[:,0:n-1]
-clf = svm.SVC()
+clf = svm.linearSVC()
 clf.fit(X, y)
 # (timestep, playerx, playery, playerVelY, upperPipes[0]['x'], 
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)

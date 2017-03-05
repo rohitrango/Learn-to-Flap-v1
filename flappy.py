@@ -321,7 +321,7 @@ def mainGame(movementInfo):
 		# print score so player overlaps the score
 		showScore(score)
 		SCREEN.blit(IMAGES['player'][playerIndex], (playerx, playery))
-		pygame.draw.circle(SCREEN, RED, (int(upperPipes[0]['x']),int(upperPipes[0]['y']+pipeHeight)), 5,0)
+		pygame.draw.circle(SCREEN, RED, (int(upperPipes[p]['x']),int(upperPipes[p]['y']+pipeHeight)), 5,0)
 		pygame.draw.circle(SCREEN, RED, (int(playerx),int(playery)), 5,0)
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)

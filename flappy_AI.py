@@ -251,12 +251,12 @@ def mainGame(movementInfo):
         delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
         dely1 = playery - (upperPipes[p]['y']+pipeHeight)
         dely2 = lowerPipes[p]['y'] - playery
-        Xval = np.array([ playerVelY,delx,dely1,dely2,
+        Xval = np.array([[ playerVelY,delx,dely1,dely2,
                             playerVelY**2,delx**2,dely1**2,dely2**2,
                             playerVelY**3,delx**3,dely1**3,dely2**3,
-                            ])
-
-        yval = int(clf.predict(Xval)[0])
+                        ]])
+        z = clf.predict(Xval)
+        yval = int(z[0])
         if yval == 1:
             k.tap_key(k.space)
 

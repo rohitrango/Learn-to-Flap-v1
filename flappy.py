@@ -247,9 +247,15 @@ def mainGame(movementInfo):
         # Enter the entry into the csv
         # feed in the value whether to flap or not
         if(timestep%7==0 or playerFlapped):
-            writer.writerow((playerx, playery, playerVelY, 
-                            upperPipes[0]['x'], upperPipes[0]['y'], lowerPipes[0]['y'],
-                            upperPipes[1]['x'], upperPipes[1]['y'], lowerPipes[1]['y'],
+            delx = upperPipes[0]['x']-playerx
+            if(delx > 0):
+                p = 0
+            else:
+                p = 1
+            delx = upperPipes[p]['x'] - playerx
+            dely1 = playery - upperPipes[p]['y']
+            dely2 = lowerPipes[p]['y'] - playery
+            writer.writerow((playerVelY,delx,dely1,dely2,playerVelY**2,delx**2,dely1**2,dely2**2,playerVelY**3,delx**3,dely1**3,dely2**3,
                             int(playerFlapped)))
         timestep+=1
 

@@ -14,6 +14,7 @@ y = X[:,n-1]
 X = X[:,0:n-1]
 clf = svm.LinearSVC()
 clf.fit(X, y)
+keypress = PyKeyboard()
 # (timestep, playerx, playery, playerVelY, upperPipes[0]['x'], 
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)
 # writer.writerow(('Timestep','PlayerX', 'PlayerY','PlayerVelY','PipeX','upperPipe_Y','lowerPipe_Y','flapped'))
@@ -149,6 +150,7 @@ def main():
 
 
 def showWelcomeAnimation():
+    global keypress
     """Shows welcome screen animation of flappy bird"""
     # index of player to blit on screen
     playerIndex = 0
@@ -170,6 +172,7 @@ def showWelcomeAnimation():
     playerShmVals = {'val': 0, 'dir': 1}
 
     while True:
+        keypress.tap_key(keypress.space)
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
@@ -341,6 +344,7 @@ def mainGame(movementInfo):
 
 
 def showGameOverScreen(crashInfo):
+    global keypress
     """crashes the player down ans shows gameover image"""
     score = crashInfo['score']
     playerx = SCREENWIDTH * 0.2
@@ -359,6 +363,7 @@ def showGameOverScreen(crashInfo):
         SOUNDS['die'].play()
 
     while True:
+        keypress.tap_key(keypress.space)
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()

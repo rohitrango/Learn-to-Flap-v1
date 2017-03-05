@@ -246,7 +246,7 @@ def mainGame(movementInfo):
 		RED=(255,0,0)
 		# Enter the entry into the csv
 		# feed in the value whether to flap or not
-		delx = upperPipes[0]['x']-(playerx +IMAGES['player'][0].get_width())
+		delx = (upperPipes[0]['x']+IMAGES['pipe'][0].get_width())-(playerx +IMAGES['player'][0].get_width())
 		if(delx > 0):
 			p = 0
 		else:

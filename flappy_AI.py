@@ -5,8 +5,15 @@ import csv
 import pygame
 from pygame.locals import *
 # Writer for training data
-trainFile = open('train.csv', 'a')
-writer = csv.writer(trainFile)
+from sklearn import svm
+import numpy as np
+from pykeyboard import PyKeyboard
+X = np.loadtxt('train.csv',delimiter=",")
+m, n = X.shape
+y = X[:,n-1]
+X = X[:,0:n-1]
+clf = svm.SVC()
+clf.fit(X, y)
 # (timestep, playerx, playery, playerVelY, upperPipes[0]['x'], 
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)
 # writer.writerow(('Timestep','PlayerX', 'PlayerY','PlayerVelY','PipeX','upperPipe_Y','lowerPipe_Y','flapped'))
@@ -196,7 +203,8 @@ def showWelcomeAnimation():
 
 
 def mainGame(movementInfo):
-    global trainFile, writer
+    global clf
+    k = PyKeyboard()
     score = playerIndex = loopIter = 0
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
@@ -233,6 +241,12 @@ def mainGame(movementInfo):
     
     while True:
 
+        Xval = np.array([playerx, playery, playerVelY, upperPipes[0]['x'], 
+                                 upperPipes[0]['y'], lowerPipes[0]['y']])
+        yval = int(clf.predict(Xval)[0])
+        if yval == 1:
+            k.tap_key(k.space)
+
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
@@ -243,14 +257,7 @@ def mainGame(movementInfo):
                     playerVelY = playerFlapAcc
                     playerFlapped = True
                     SOUNDS['wing'].play()
-        
-        # Enter the entry into the csv
-        # feed in the value whether to flap or not
-        if(timestep%4==0 or playerFlapped):
-            writer.writerow((playerx, playery, playerVelY, upperPipes[0]['x'], 
-                                 upperPipes[0]['y'], lowerPipes[0]['y'], int(playerFlapped)))
-        timestep+=1
-
+         
         # check for crash here
         crashTest = checkCrash({'x': playerx, 'y': playery, 'index': playerIndex},
                                upperPipes, lowerPipes)

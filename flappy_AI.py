@@ -12,7 +12,7 @@ X = np.loadtxt('train.csv',delimiter=",")
 m, n = X.shape
 y = X[:,n-1]
 X = X[:,0:n-1]
-clf = svm.SVC()
+clf = svm.LinearSVC()
 clf.fit(X, y)
 # (timestep, playerx, playery, playerVelY, upperPipes[0]['x'], 
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)
@@ -209,6 +209,7 @@ def mainGame(movementInfo):
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
 
+    pipeHeight = IMAGES['pipe'][0].get_height()
     basex = movementInfo['basex']
     baseShift = IMAGES['base'].get_width() - IMAGES['background'].get_width()
 
@@ -241,10 +242,20 @@ def mainGame(movementInfo):
     
     while True:
 
-        Xval = np.array([playerx, playery, playerVelY, 
-                        upperPipes[0]['x'], upperPipes[0]['y'], lowerPipes[0]['y'],
-                        upperPipes[1]['x'], upperPipes[1]['y'], lowerPipes[1]['y']
-                        ])
+        # prepare the data and feed it
+        delx = upperPipes[0]['x']-(playerx +IMAGES['player'][0].get_width())
+        if(delx > 0):
+            p = 0
+        else:
+            p = 1
+        delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
+        dely1 = playery - (upperPipes[p]['y']+pipeHeight)
+        dely2 = lowerPipes[p]['y'] - playery
+        Xval = np.array([ playerVelY,delx,dely1,dely2,
+                            playerVelY**2,delx**2,dely1**2,dely2**2,
+                            playerVelY**3,delx**3,dely1**3,dely2**3,
+                            ])
+
         yval = int(clf.predict(Xval)[0])
         if yval == 1:
             k.tap_key(k.space)

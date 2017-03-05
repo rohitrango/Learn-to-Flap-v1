@@ -246,9 +246,11 @@ def mainGame(movementInfo):
         
         # Enter the entry into the csv
         # feed in the value whether to flap or not
-        if(timestep%4==0 or playerFlapped):
-            writer.writerow((playerx, playery, playerVelY, upperPipes[0]['x'], 
-                                 upperPipes[0]['y'], lowerPipes[0]['y'], int(playerFlapped)))
+        if(timestep%7==0 or playerFlapped):
+            writer.writerow((playerx, playery, playerVelY, 
+                            upperPipes[0]['x'], upperPipes[0]['y'], lowerPipes[0]['y'],
+                            upperPipes[1]['x'], upperPipes[1]['y'], lowerPipes[1]['y'],
+                            int(playerFlapped)))
         timestep+=1
 
         # check for crash here

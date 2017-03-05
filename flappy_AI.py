@@ -241,8 +241,10 @@ def mainGame(movementInfo):
     
     while True:
 
-        Xval = np.array([playerx, playery, playerVelY, upperPipes[0]['x'], 
-                                 upperPipes[0]['y'], lowerPipes[0]['y']])
+        Xval = np.array([playerx, playery, playerVelY, 
+                        upperPipes[0]['x'], upperPipes[0]['y'], lowerPipes[0]['y'],
+                        upperPipes[1]['x'], upperPipes[1]['y'], lowerPipes[1]['y']
+                        ])
         yval = int(clf.predict(Xval)[0])
         if yval == 1:
             k.tap_key(k.space)

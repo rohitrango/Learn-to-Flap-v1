@@ -1,10 +1,9 @@
 from itertools import cycle
 import random
 import sys
-
 import pygame
 from pygame.locals import *
-
+from pykeyboard import PyKeyboard
 
 FPS = 30
 SCREENWIDTH  = 288
@@ -190,6 +189,9 @@ def showWelcomeAnimation():
 
 
 def mainGame(movementInfo):
+    # define the keyboard
+    k = PyKeyboard()
+
     score = playerIndex = loopIter = 0
     playerIndexGen = movementInfo['playerIndexGen']
     playerx, playery = int(SCREENWIDTH * 0.2), movementInfo['playery']
@@ -225,6 +227,7 @@ def mainGame(movementInfo):
 
 
     while True:
+
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
@@ -305,6 +308,7 @@ def mainGame(movementInfo):
 
 def showGameOverScreen(crashInfo):
     """crashes the player down ans shows gameover image"""
+
     score = crashInfo['score']
     playerx = SCREENWIDTH * 0.2
     playery = crashInfo['y']
@@ -371,6 +375,10 @@ def getRandomPipe():
     gapY += int(BASEY * 0.2)
     pipeHeight = IMAGES['pipe'][0].get_height()
     pipeX = SCREENWIDTH + 10
+
+    # print("Pipe details: ")
+    # print("Upper pipe : (%f, %f)"%(pipeX, gapY - pipeHeight))
+    # print("Lower pipe : (%f, %f)"%(pipeX, gapY + PIPEGAPSIZE))
 
     return [
         {'x': pipeX, 'y': gapY - pipeHeight},  # upper pipe

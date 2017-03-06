@@ -8,12 +8,11 @@ from pygame.locals import *
 from sklearn import svm
 import numpy as np
 from pykeyboard import PyKeyboard
-X = np.loadtxt('train.csv',delimiter=",")
-m, n = X.shape
-y = X[:,n-1]
-X = X[:,0:n-1]
-clf = svm.LinearSVC()
-clf.fit(X, y)
+import cPickle
+
+with open('model.pkl', 'rb') as fid:
+    clf = cPickle.load(fid)
+
 keypress = PyKeyboard()
 # (timestep, playerx, playery, playerVelY, upperPipes[0]['x'], 
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)

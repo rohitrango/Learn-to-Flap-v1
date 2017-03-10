@@ -254,8 +254,8 @@ def mainGame(movementInfo):
 		delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
 		dely1 = playery - (upperPipes[p]['y']+pipeHeight)
 		dely2 = lowerPipes[p]['y'] - playery
-		writer.writerow((playerVelY,delx,dely1,dely2,playerVelY**2,delx**2,dely1**2,dely2**2,playerVelY**3,delx**3,dely1**3,dely2**3,
-							int(playerFlapped)))
+		# writer.writerow((playerVelY,delx,dely1,dely2,playerVelY**2,delx**2,dely1**2,dely2**2,playerVelY**3,delx**3,dely1**3,dely2**3,
+		# 					int(playerFlapped)))
 		timestep+=1
 
 		# check for crash here

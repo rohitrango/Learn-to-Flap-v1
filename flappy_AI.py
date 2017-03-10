@@ -1,3 +1,4 @@
+from __future__ import division
 from itertools import cycle
 import random
 import sys
@@ -18,7 +19,7 @@ keypress = PyKeyboard()
                              # upperPipes[0]['y'], lowerPipes[0]['y'], playerFlapped)
 # writer.writerow(('Timestep','PlayerX', 'PlayerY','PlayerVelY','PipeX','upperPipe_Y','lowerPipe_Y','flapped'))
 
-FPS = 30
+FPS = 50
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
 # amount by which base can maximum shift to left
@@ -245,18 +246,20 @@ def mainGame(movementInfo):
     while True:
 
         # prepare the data and feed it
-        delx = upperPipes[0]['x']-(playerx +IMAGES['player'][0].get_width())
-        if(delx > 0):
-            p = 0
-        else:
-            p = 1
-        delx = upperPipes[p]['x'] - (playerx+IMAGES['player'][0].get_width())
-        dely1 = playery - (upperPipes[p]['y']+pipeHeight)
-        dely2 = lowerPipes[p]['y'] - playery
-        Xval = np.array([[ playerVelY,delx,dely1,dely2,
-                            playerVelY**2,delx**2,dely1**2,dely2**2,
-                            playerVelY**3,delx**3,dely1**3,dely2**3,
+        p=0
+        delx = upperPipes[0]['x'] - (playerx + int(IMAGES['player'][0].get_width()/2))
+        if(delx + int(IMAGES['player'][0].get_width()/2) < -IMAGES['pipe'][0].get_width()):
+        	# go to next pipe
+        	delx = upperPipes[1]['x'] - (playerx + int(IMAGES['player'][0].get_width()/2))
+        	p=1
+
+        dely = (lowerPipes[p]['y'] - playery)
+
+        Xval = np.array([[  playerVelY,delx,dely,
+                            playerVelY**2,delx**2,dely**2,
+                            playerVelY**3,delx**3,dely**3,
                         ]])
+
         z = clf.predict(Xval)
         yval = int(z[0])
         if yval == 1:

@@ -1,3 +1,4 @@
 *.pyc
 backup.csv
 train*
+RL/scores.txt
